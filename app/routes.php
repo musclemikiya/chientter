@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
+//Route::get('/', function()
+//{
+//	//return View::make('hello');
+//	echo "<h1>muscle</h1>";
+//});
+Route::get('/', 'HomeController@index');

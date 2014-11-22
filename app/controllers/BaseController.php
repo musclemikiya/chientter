@@ -15,4 +15,10 @@ class BaseController extends Controller {
 		}
 	}
 
+	public function display($data, $tpl) {
+		$view = new MySmarty();
+		$view->assign($data);
+        		return $view->fetch($tpl);
+	}
+
 }

@@ -3,16 +3,19 @@
 	"description": "The Laravel Framework.",
 	"keywords": ["framework", "laravel"],
 	"require": {
-		"laravel/framework": "4.0.*"
+		"laravel/framework": "4.0.*",
+        "smarty/smarty": "3.1.*"
 	},
 	"autoload": {
 		"classmap": [
 			"app/commands",
 			"app/controllers",
 			"app/models",
+			"app/libraries",
 			"app/database/migrations",
 			"app/database/seeds",
-			"app/tests/TestCase.php"
+			"app/tests/TestCase.php",
+            "app/views"
 		]
 	},
 	"scripts": {

@@ -1,5 +1,4 @@
 <?php
-
 class HomeController extends BaseController {
 
 	/*
@@ -15,9 +14,18 @@ class HomeController extends BaseController {
 	|
 	*/
 
-	public function showWelcome()
+	public function index()
 	{
-		return View::make('hello');
+		// model initialize
+		$t_user = new User;
+		$users = $t_user->getUsers();
+		foreach ($users as $user) {
+			var_dump($user->twitter_id);
+		}
+
+		exit();
+		$data = array();
+		return($this->display($data, 'index.tpl'));
 	}
 
 }
