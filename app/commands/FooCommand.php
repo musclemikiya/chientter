@@ -45,10 +45,9 @@ class FooCommand extends Command {
     public function fire()
     {
         // 検索ワード
-        $search_words = array('山手線', '田園都市線');
+        $lines = array('山手線', '田園都市線');
         $user = '@musclemikiya';
-        //$target_words = '/遅延|人身事故|遅れ|見合わせ|止まって|とまって/';
-        $target_words = '/山手線/';    
+        $target_words = '/遅延|人身事故|遅れ|見合わせ|止まって|とまって/';
 
         // keyの値
         $consumer_key = "hx6skRSqmqHevxgLEHplA";
@@ -58,22 +57,23 @@ class FooCommand extends Command {
         // OAuthオブジェクト生成
         $twitterOauth = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
         
-        foreach ($search_words as $word) {
-            $q = urlencode($word);
-            $ret = $twitterOauth->OAuthRequest("https://api.twitter.com/1.1/search/tweets.json","GET",array("q"=>$q, "count"=>self::TWEET_NUM, "locate"=>"ja"));
+        foreach ($lines as $line) {
+            $q = urlencode($line);
+            $ret = $twitterOauth->OAuthRequest(
+             "https://api.twitter.com/1.1/search/tweets.json",
+             "GET",
+                array("q"=>$q, "count"=>self::TWEET_NUM, "locate"=>"ja")
+            );
             $ret = json_decode($ret, true);
             $count = 0;
             foreach ($ret['statuses'] as $result) {
                if (preg_match($target_words, $result['text'])) $count++;
             }
-            var_dump($count);
             Log::info("{$count} ");
-            if ($count/self::TWEET_NUM*100 >= self::PERCENTAGE) {
+            if (($count/self::TWEET_NUM)*100 >= self::PERCENTAGE) {
                 $message = "{$user} {$word}が遅延しています";
-                $ret = $twitterOauth->OAuthRequest("http://api.twitter.com/1.1/statuses/update.json","POST",array("status"=>$message));
+                $ret = $twitterOauth->OAuthRequest("https://api.twitter.com/1.1/statuses/update.json","POST",array("status"=>$message));
                 var_dump($ret);
-                // print $ret;
-                echo $word;
             }
         }
     }
